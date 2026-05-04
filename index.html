@@ -26,7 +26,7 @@
     backdrop-filter: blur(10px);
     border-radius: 20px;
     padding: 22px;
-    width: 360px;
+    width: 420px;
     text-align: center;
     box-shadow: 0 10px 30px rgba(0,0,0,0.3);
   }
@@ -69,9 +69,7 @@
     font-size: 13px;
   }
 
-  button:hover {
-    background: rgba(255,255,255,0.25);
-  }
+  button:hover { background: rgba(255,255,255,0.25); }
 
   .block {
     margin-top: 12px;
@@ -123,7 +121,7 @@
 
   <div class="block" id="shifts"></div>
 
-  <button onclick="randomPick()">🎲 Tirage créneau</button>
+  <button id="drawBtn" onclick="randomPick()">🎲 Tirage créneau</button>
 
   <div class="roulette" id="roulette">---</div>
   <div class="big" id="winner"></div>
@@ -139,16 +137,15 @@ function formatTime(d){
 }
 
 function formatDuration(ms){
-  const h = Math.floor(ms/3600000);
-  const m = Math.floor((ms%3600000)/60000);
+  const h=Math.floor(ms/3600000);
+  const m=Math.floor((ms%3600000)/60000);
   return `${h}h${pad(m)}`;
 }
 
 function getDates(){
-  const s = document.getElementById('startTime').value;
-  const e = document.getElementById('endTime').value;
-
-  if(!s || !e) return null;
+  const s=document.getElementById('startTime').value;
+  const e=document.getElementById('endTime').value;
+  if(!s||!e) return null;
 
   const [sh,sm]=s.split(':').map(Number);
   const [eh,em]=e.split(':').map(Number);
@@ -180,10 +177,13 @@ function calculate(){
   document.getElementById('summaryTop').innerHTML=
     `⏳ Temps de travail restant : <b>${formatDuration(remaining)}</b>`;
 
+  const total=end-start;
+  const d1=mid-start;
+
   document.getElementById('middle').innerHTML=
-    `📍 Durée entre coupure et fin de nuit : ${formatDuration(end-start)}<br>`+
+    `📍  Durée restante après coupure : ${formatDuration(total)}<br>`+
     `⏰ Heure de la relève : <b>${formatTime(mid)}</b><br>`+
-    `🛏️ Durée d’un créneau : <b>${formatDuration(mid-start)}</b>`;
+    `🛏️ Durée d’un créneau : <b>${formatDuration(d1)}</b>`;
 
   document.getElementById('shifts').innerHTML=
     `Créneau 1 : ${formatTime(start)} → ${formatTime(mid)}<br>`+
@@ -200,6 +200,12 @@ function setNow(){
 
 function randomPick(){
 
+  const btn=document.getElementById('drawBtn');
+  btn.disabled=true;
+
+  document.getElementById('winner').innerText="";
+  document.getElementById('roulette').innerText="---";
+
   let i=0;
   const spins=["Créneau 1","Créneau 2"];
 
@@ -208,11 +214,20 @@ function randomPick(){
     i++;
   },100);
 
+  const pick = Math.random() < 0.5 ? 1 : 2; // SINGLE RANDOM ONCE
+
   setTimeout(()=>{
     clearInterval(anim);
-    const pick=Math.random()<0.5?1:2;
+
+    document.getElementById('roulette').innerText="";
+
     document.getElementById('winner').innerText=
-      pick===1?"Créneau 1 sélectionné":"Créneau 2 sélectionné";
+      pick===1
+        ? "🎯 Créneau 1 sélectionné"
+        : "🎯 Créneau 2 sélectionné";
+
+    btn.disabled=false;
+
   },1400);
 }
 
