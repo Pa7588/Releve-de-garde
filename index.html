@@ -1,161 +1,225 @@
 <!DOCTYPE html>
 <html lang="fr">
 <head>
-  <meta charset="UTF-8">
-  <title>Relève de garde</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600&display=swap" rel="stylesheet">
-  <style>
-    * { box-sizing: border-box; }
+<meta charset="UTF-8">
+<title>Relève de garde</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600&display=swap" rel="stylesheet">
 
-    body {
-      margin: 0;
-      font-family: 'Inter', sans-serif;
-      background: linear-gradient(135deg, #0f172a, #1e293b);
-      color: white;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      height: 100vh;
-    }
+<style>
+  * { box-sizing: border-box; }
 
-    .card {
-      background: rgba(255,255,255,0.05);
-      backdrop-filter: blur(10px);
-      border-radius: 20px;
-      padding: 25px;
-      width: 320px;
-      text-align: center;
-      box-shadow: 0 10px 30px rgba(0,0,0,0.3);
-    }
+  body {
+    margin: 0;
+    font-family: 'Inter', sans-serif;
+    background: linear-gradient(135deg, #0f172a, #1e293b);
+    color: white;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    padding: 20px;
+  }
 
-    h1 {
-      font-size: 20px;
-      margin-bottom: 15px;
-      font-weight: 600;
-    }
+  .card {
+    background: rgba(255,255,255,0.06);
+    backdrop-filter: blur(10px);
+    border-radius: 20px;
+    padding: 22px;
+    width: 360px;
+    text-align: center;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+  }
 
-    .now {
-      font-size: 14px;
-      opacity: 0.7;
-      margin-bottom: 20px;
-    }
+  h1 { font-size: 20px; margin-bottom: 6px; }
 
-    label {
-      font-size: 13px;
-      opacity: 0.8;
-      display: block;
-      margin-top: 10px;
-    }
+  .now { font-size: 14px; opacity: 0.8; margin-bottom: 10px; }
 
-    input {
-      margin-top: 6px;
-      margin-bottom: 10px;
-      padding: 10px;
-      font-size: 16px;
-      border-radius: 10px;
-      border: none;
-      width: 100%;
-      text-align: center;
-      background: rgba(255,255,255,0.1);
-      color: white;
-    }
+  .top { font-size: 16px; font-weight: 600; margin-bottom: 12px; }
 
-    button {
-      margin-top: 5px;
-      padding: 8px 12px;
-      border: none;
-      border-radius: 10px;
-      background: rgba(255,255,255,0.15);
-      color: white;
-      font-size: 13px;
-      cursor: pointer;
-    }
+  label {
+    font-size: 13px;
+    opacity: 0.8;
+    display: block;
+    margin-top: 10px;
+    text-align: left;
+  }
 
-    button:hover {
-      background: rgba(255,255,255,0.25);
-    }
+  input {
+    width: 100%;
+    padding: 10px;
+    margin-top: 6px;
+    border-radius: 10px;
+    border: none;
+    background: rgba(255,255,255,0.1);
+    color: white;
+    text-align: center;
+    font-size: 15px;
+  }
 
-    .result {
-      margin-top: 15px;
-      font-size: 24px;
-      font-weight: 600;
-    }
+  button {
+    margin-top: 10px;
+    width: 100%;
+    padding: 10px;
+    border-radius: 10px;
+    border: none;
+    background: rgba(255,255,255,0.15);
+    color: white;
+    cursor: pointer;
+    font-size: 13px;
+  }
 
-    .subtitle {
-      font-size: 13px;
-      opacity: 0.6;
-      margin-top: 5px;
-    }
-  </style>
+  button:hover {
+    background: rgba(255,255,255,0.25);
+  }
+
+  .block {
+    margin-top: 12px;
+    padding: 10px;
+    background: rgba(255,255,255,0.05);
+    border-radius: 12px;
+    font-size: 13px;
+    text-align: left;
+    line-height: 1.5;
+  }
+
+  .big {
+    font-size: 18px;
+    font-weight: 600;
+    text-align: center;
+    margin-top: 10px;
+  }
+
+  .roulette {
+    margin-top: 10px;
+    height: 18px;
+    font-size: 14px;
+    opacity: 0.8;
+    text-align:center;
+  }
+</style>
 </head>
+
 <body>
-  <div class="card">
-    <h1>Relève de garde</h1>
 
-    <div class="now" id="now"></div>
+<div class="card">
 
-    <label>Heure du coucher</label>
-    <input type="time" id="startTime">
-    <button onclick="setNow()">Maintenant</button>
+  <h1>Relève de garde</h1>
 
-    <label>Fin de garde</label>
-    <input type="time" id="endTime" value="08:00">
+  <div class="now" id="now"></div>
 
-    <div class="result" id="result">--:--</div>
-    <div class="subtitle">heure de relève</div>
-  </div>
+  <div class="top" id="summaryTop"></div>
 
-  <script>
-    function formatTime(date) {
-      return date.toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'});
-    }
+  <label>Heure du coucher</label>
+  <input type="time" id="startTime">
+  <button onclick="setNow()">Maintenant</button>
 
-    function updateNow() {
-      const now = new Date();
-      document.getElementById('now').textContent = formatTime(now);
-    }
+  <label>Fin de garde</label>
+  <input type="time" id="endTime" value="08:00">
 
-    function setNow() {
-      const now = new Date();
-      const h = String(now.getHours()).padStart(2, '0');
-      const m = String(now.getMinutes()).padStart(2, '0');
-      document.getElementById('startTime').value = `${h}:${m}`;
-      calculateMidpoint();
-    }
+  <button onclick="calculate()">Calculer</button>
 
-    function calculateMidpoint() {
-      const startInput = document.getElementById('startTime').value;
-      const endInput = document.getElementById('endTime').value;
+  <div class="block" id="middle"></div>
 
-      if (!startInput || !endInput) return;
+  <div class="block" id="shifts"></div>
 
-      const [sh, sm] = startInput.split(":").map(Number);
-      const [eh, em] = endInput.split(":").map(Number);
+  <button onclick="randomPick()">🎲 Tirage créneau</button>
 
-      let start = new Date();
-      start.setHours(sh, sm, 0, 0);
+  <div class="roulette" id="roulette">---</div>
+  <div class="big" id="winner"></div>
 
-      let end = new Date();
-      end.setHours(eh, em, 0, 0);
+</div>
 
-      if (end <= start) {
-        end.setDate(end.getDate() + 1);
-      }
+<script>
 
-      const midpoint = new Date((start.getTime() + end.getTime()) / 2);
+function pad(n){return n.toString().padStart(2,'0');}
 
-      document.getElementById('result').textContent = formatTime(midpoint);
-    }
+function formatTime(d){
+  return `${pad(d.getHours())}:${pad(d.getMinutes())}`;
+}
 
-    document.getElementById('startTime').addEventListener('input', calculateMidpoint);
-    document.getElementById('endTime').addEventListener('input', calculateMidpoint);
+function formatDuration(ms){
+  const h = Math.floor(ms/3600000);
+  const m = Math.floor((ms%3600000)/60000);
+  return `${h}h${pad(m)}`;
+}
 
-    setInterval(updateNow, 1000);
+function getDates(){
+  const s = document.getElementById('startTime').value;
+  const e = document.getElementById('endTime').value;
 
-    // Init
-    updateNow();
-    setNow();
-  </script>
+  if(!s || !e) return null;
+
+  const [sh,sm]=s.split(':').map(Number);
+  const [eh,em]=e.split(':').map(Number);
+
+  let start=new Date();
+  start.setHours(sh,sm,0,0);
+
+  let end=new Date();
+  end.setHours(eh,em,0,0);
+
+  if(end<=start) end.setDate(end.getDate()+1);
+
+  let mid=new Date((start.getTime()+end.getTime())/2);
+
+  return {start,end,mid};
+}
+
+function calculate(){
+
+  const now=new Date();
+  const data=getDates();
+  if(!data) return;
+
+  const {start,end,mid}=data;
+
+  let remaining=end-now;
+  if(remaining<0) remaining+=24*3600000;
+
+  document.getElementById('summaryTop').innerHTML=
+    `⏳ Temps de travail restant : <b>${formatDuration(remaining)}</b>`;
+
+  document.getElementById('middle').innerHTML=
+    `📍 Durée entre coupure et fin de nuit : ${formatDuration(end-start)}<br>`+
+    `⏰ Heure de la relève : <b>${formatTime(mid)}</b><br>`+
+    `🛏️ Durée d’un créneau : <b>${formatDuration(mid-start)}</b>`;
+
+  document.getElementById('shifts').innerHTML=
+    `Créneau 1 : ${formatTime(start)} → ${formatTime(mid)}<br>`+
+    `Créneau 2 : ${formatTime(mid)} → ${formatTime(end)}`;
+
+  document.getElementById('now').innerText=`Il est : ${formatTime(now)}`;
+}
+
+function setNow(){
+  const now=new Date();
+  document.getElementById('startTime').value=`${pad(now.getHours())}:${pad(now.getMinutes())}`;
+  calculate();
+}
+
+function randomPick(){
+
+  let i=0;
+  const spins=["Créneau 1","Créneau 2"];
+
+  const anim=setInterval(()=>{
+    document.getElementById('roulette').innerText=spins[i%2];
+    i++;
+  },100);
+
+  setTimeout(()=>{
+    clearInterval(anim);
+    const pick=Math.random()<0.5?1:2;
+    document.getElementById('winner').innerText=
+      pick===1?"Créneau 1 sélectionné":"Créneau 2 sélectionné";
+  },1400);
+}
+
+setInterval(calculate,1000);
+setNow();
+
+</script>
+
 </body>
 </html>
